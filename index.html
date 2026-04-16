@@ -3,84 +3,196 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo Card</title>
+  <title>Todo Card – Stage 1</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <article data-testid="test-todo-card" role="region" aria-label="Todo task card">
+  <article data-testid="test-todo-card" role="region" aria-label="Todo task card" id="todo-card">
 
-    <div class="card-header">
-      <div class="checkbox-wrap">
-        <label for="todo-complete" class="sr-only">Mark task as complete</label>
+    <!-- ── Priority Indicator (left accent bar) ── -->
+    <div data-testid="test-todo-priority-indicator" id="priority-indicator" class="priority-indicator" aria-hidden="true"></div>
+
+    <!-- ══════════════════════════════════════
+         VIEW MODE
+    ══════════════════════════════════════ -->
+    <div id="view-mode">
+
+      <div class="card-header">
+        <div class="checkbox-wrap">
+          <label for="todo-complete">Mark complete</label>
+          <input
+            type="checkbox"
+            id="todo-complete"
+            data-testid="test-todo-complete-toggle"
+            aria-label="Mark task as complete"
+          >
+        </div>
+
+        <div class="title-area">
+          <h2 data-testid="test-todo-title" id="todo-title">Redesign the onboarding flow</h2>
+        </div>
+
+        <span
+          data-testid="test-todo-priority"
+          id="priority-badge"
+          class="badge priority-high"
+          aria-label="Priority: High"
+        >High</span>
+      </div>
+
+      <!-- Description + expand/collapse -->
+      <div class="description-wrap">
+        <div
+          data-testid="test-todo-collapsible-section"
+          id="collapsible-section"
+          class="collapsible"
+          aria-hidden="false"
+        >
+          <p data-testid="test-todo-description" id="todo-description">
+            Update the user onboarding screens to align with the new design system.
+            Includes updated copy, revised step order, and new illustration assets from the brand team. The goal is to reduce drop-off during sign-up by simplifying the first three steps and making the value proposition clearer upfront.
+          </p>
+        </div>
+        <button
+          data-testid="test-todo-expand-toggle"
+          id="expand-toggle"
+          class="expand-btn"
+          aria-expanded="false"
+          aria-controls="collapsible-section"
+        >Show more ▾</button>
+      </div>
+
+      <!-- Meta row -->
+      <div class="meta-row">
+        <div class="meta-item">
+          <span aria-hidden="true">📅</span>
+          <time data-testid="test-todo-due-date" id="due-date-display" datetime="2026-04-17T23:59:00">
+            Due Apr 17, 2026
+          </time>
+        </div>
+
+        <time
+          data-testid="test-todo-time-remaining"
+          id="time-remaining"
+          aria-live="polite"
+          aria-label="Time remaining"
+        >Calculating…</time>
+
+        <span
+          data-testid="test-todo-overdue-indicator"
+          id="overdue-indicator"
+          class="overdue-badge hidden"
+          aria-live="polite"
+          role="status"
+        >⚠ Overdue</span>
+      </div>
+
+      <!-- Status control -->
+      <div class="status-row">
+        <label for="status-control" class="status-label">Status</label>
+        <select
+          data-testid="test-todo-status-control"
+          id="status-control"
+          aria-label="Task status"
+        >
+          <option value="Pending">Pending</option>
+          <option value="In Progress" selected>In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+
+        <span
+          data-testid="test-todo-status"
+          id="status-badge"
+          class="badge status-in-progress"
+          aria-label="Status: In Progress"
+        >In Progress</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Tags -->
+      <ul data-testid="test-todo-tags" role="list" aria-label="Tags">
+        <li data-testid="test-todo-tag-work" role="listitem">work</li>
+        <li data-testid="test-todo-tag-urgent" role="listitem">urgent</li>
+        <li data-testid="test-todo-tag-design" role="listitem">design</li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button data-testid="test-todo-edit-button" id="edit-btn" class="btn btn-edit" aria-label="Edit task">
+          ✏️ Edit
+        </button>
+        <button data-testid="test-todo-delete-button" id="delete-btn" class="btn btn-delete" aria-label="Delete task">
+          🗑️ Delete
+        </button>
+      </div>
+
+    </div><!-- /view-mode -->
+
+
+    <!-- ══════════════════════════════════════
+         EDIT MODE
+    ══════════════════════════════════════ -->
+    <div
+      data-testid="test-todo-edit-form"
+      id="edit-mode"
+      class="edit-form hidden"
+      role="form"
+      aria-label="Edit task form"
+    >
+      <h3 class="edit-heading">Edit Task</h3>
+
+      <div class="field">
+        <label for="edit-title">Title</label>
         <input
-          type="checkbox"
-          id="todo-complete"
-          data-testid="test-todo-complete-toggle"
-          aria-label="Mark task as complete"
+          type="text"
+          id="edit-title"
+          data-testid="test-todo-edit-title-input"
+          placeholder="Task title"
+          autocomplete="off"
         >
       </div>
-      <div class="title-area">
-        <h2 data-testid="test-todo-title">Redesign the onboarding flow</h2>
+
+      <div class="field">
+        <label for="edit-description">Description</label>
+        <textarea
+          id="edit-description"
+          data-testid="test-todo-edit-description-input"
+          rows="4"
+          placeholder="Task description"
+        ></textarea>
       </div>
-      <span
-        data-testid="test-todo-priority"
-        class="priority-high"
-        aria-label="Priority: High"
-      >High</span>
-    </div>
 
-    <p data-testid="test-todo-description">
-      Update the user onboarding screens to align with the new design system.
-      Includes updated copy, revised step order, and new illustration assets.
-    </p>
+      <div class="field-row">
+        <div class="field">
+          <label for="edit-priority">Priority</label>
+          <select id="edit-priority" data-testid="test-todo-edit-priority-select">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High" selected>High</option>
+          </select>
+        </div>
 
-    <div class="meta-row">
-      <div class="meta-item">
-        <span class="meta-icon" aria-hidden="true">📅</span>
-        <time data-testid="test-todo-due-date" datetime="2026-04-16T18:00:00Z">
-          Due Apr 16, 2026
-        </time>
+        <div class="field">
+          <label for="edit-due-date">Due Date</label>
+          <input
+            type="datetime-local"
+            id="edit-due-date"
+            data-testid="test-todo-edit-due-date-input"
+          >
+        </div>
       </div>
-      <time
-        data-testid="test-todo-time-remaining"
-        id="time-remaining"
-        aria-live="polite"
-        aria-label="Time remaining"
-        datetime="2026-04-16T18:00:00Z"
-      >Calculating…</time>
-      <span
-        data-testid="test-todo-status"
-        id="status-badge"
-        class="status-in-progress"
-        aria-label="Status: In Progress"
-      >In Progress</span>
-    </div>
 
-    <div class="divider"></div>
-
-    <ul data-testid="test-todo-tags" role="list" aria-label="Tags">
-      <li data-testid="test-todo-tag-work" role="listitem">work</li>
-      <li data-testid="test-todo-tag-urgent" role="listitem">urgent</li>
-      <li data-testid="test-todo-tag-design" role="listitem">design</li>
-    </ul>
-
-    <div class="actions">
-      <button
-        data-testid="test-todo-edit-button"
-        class="btn"
-        aria-label="Edit task"
-      >
-        ✏️ Edit
-      </button>
-      <button
-        data-testid="test-todo-delete-button"
-        class="btn"
-        aria-label="Delete task"
-      >
-        🗑️ Delete
-      </button>
-    </div>
+      <div class="edit-actions">
+        <button data-testid="test-todo-save-button" id="save-btn" class="btn btn-save">
+          💾 Save
+        </button>
+        <button data-testid="test-todo-cancel-button" id="cancel-btn" class="btn btn-cancel">
+          ✕ Cancel
+        </button>
+      </div>
+    </div><!-- /edit-mode -->
 
   </article>
 
